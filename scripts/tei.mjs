@@ -32,6 +32,13 @@ const processTranscription = async (
     .catch(function (error) {
       console.error(error);
     });
+  //if the HTML contains elements we don't want to deal with, return an error message and abort processing
+  if (text.includes("<table") || text.includes("<ol") || text.includes("<ul")) {
+    console.error(
+      `File ${file} contains invalid structures (tables or lists); please edit the file and try again.`
+    );
+    return false;
+  }
   const pages = text.split(pbMarker);
   let improvedPages = [];
   for (const page of pages) {
@@ -88,5 +95,5 @@ export const createTEI = async (options) => {
   if (transcription) {
     teiString = await processTranscription(transcription, facsString);
   }
-  fs.writeFileSync(`TEI/${xmlid}.xml`, teiString);
+  teiString && fs.writeFileSync(`TEI/${xmlid}.xml`, teiString);
 };

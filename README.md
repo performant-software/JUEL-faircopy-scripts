@@ -15,13 +15,13 @@ For each document you wish to process, you should collect the following informat
 If you have the above information for a single document, and you have uploaded the transcription file to the `transcriptions` folder of this repository, then you can process your document with the following command from the root folder of the repository:
 
 ```
-node main.mjs -m <manifest url> -x <xmlid> -n <title> -u <fairdataID> -t <transcription>
+create_tei -m <manifest url> -x <xmlid> -n <title> -u <fairdataID> -t <transcription>
 ```
 
 Be sure to enclose your arguments in quotation marks if they contain spaces. For example, if you have a document called "My Excellent Archival Document" and you've uploaded the transcription file "MEAD Transcript.docx" to the `transcriptions` folder, your command might look like
 
 ```
-node main.mjs -m https://someiiifserver.com/abc/manifest -x MY_EX_ARC -n "My Excellent Archival Document" -t "MEAD Transcript.docx"
+create_tei -m https://someiiifserver.com/abc/manifest -x MY_EX_ARC -n "My Excellent Archival Document" -t "MEAD Transcript.docx"
 ```
 
 If the processing finishes successfully, your TEI document will be generated with the name `<xmlid>.xml` in the `TEI` folder. You can then import that document into FairCopy for further editing and annotating.
@@ -31,7 +31,7 @@ If the processing finishes successfully, your TEI document will be generated wit
 If you have multiple files you wish to process at once, create a CSV with columns `manifest, xmlid, title, fairdataID, transcription` and a row for each document you wish to process. Your CSV should have a header row. Upload the CSV into the `csvs` folder of this repository, and then run:
 
 ```
-node main.mjs -f <filename>
+create_tei -f <filename>
 ```
 
 where `filename` is the name of your CSV, including the extension `.csv`.

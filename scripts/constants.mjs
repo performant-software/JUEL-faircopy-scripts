@@ -28,9 +28,6 @@ export const argOptions = {
 };
 
 export const xml_dict = {
-  "/ol": "/list",
-  ol: `list rend="numbered"`,
-  li: "item",
   "/strong": "/hi",
   strong: `hi rend="strong"`,
   "/sup": "/hi",
@@ -43,14 +40,10 @@ export const xml_dict = {
   sub: `hi rend="sub"`,
   "/s": "/hi",
   s: `hi rend="line-through"`,
-  tr: "row",
-  "td colspan": "cell cols",
-  td: "cell",
   "/em": "/hi",
   em: `hi rend="bold"`,
-  ul: "list",
-  "/p>": "/line></zone>",
-  "p>": "zone><line>",
+  "/p>": "/line>",
+  "p>": "line/><line>",
 };
 
 export const PB_MARKER_DEFAULT =

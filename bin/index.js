@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 import { parseArgs } from "node:util";
 import { parse } from "csv";
-import { createTEI } from "./scripts/tei.mjs";
-import { argOptions } from "./scripts/constants.mjs";
+import { createTEI } from "../scripts/tei.mjs";
+import { argOptions } from "../scripts/constants.mjs";
 import fs from "fs";
 
 const main = async (options) => {
