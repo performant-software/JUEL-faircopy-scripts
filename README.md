@@ -1,13 +1,14 @@
 # faircopy-scripts
 
-This is a workspace for creating valid TEI documents out of IIIF manifests and (optionally) corresponding translations in the form of `.docx` files. The basic usage is as follows:
+This is a workspace for creating valid TEI documents out of IIIF manifests and (optionally) corresponding translations in the form of `.docx` files.
 
-- For each document you wish to process, you should collect the following information:
-  - `manifest`: **Required.** A URL for the IIIF manifest containing the images of your document. If you are using FairData, this URL can be found by clicking "View IIIF" on the media record for your document.
-  - `xmlid`: **Required.** The desired XML ID of the resulting TEI document.
-  - `title`: The document title.
-  - `fairdataID`: If relevant, the unique FairData identifier for the document. Note that unlike the manifest this should be found by navigating to the relevant record in the `Documents` model and copying the identifier from the upper right corner.
-  - `transcription`: The full filename (including the `.docx` extension) of the transcription for the document. **This file should be placed in the `transcriptions` folder of this repo.**
+For each document you wish to process, you should collect the following information:
+
+- `manifest`: **Required.** A URL for the IIIF manifest containing the images of your document. If you are using FairData, this URL can be found by clicking "View IIIF" on the media record for your document.
+- `xmlid`: **Required.** The desired XML ID of the resulting TEI document.
+- `title`: The document title.
+- `fairdataID`: If relevant, the unique FairData identifier for the document. Note that unlike the manifest this should be found by navigating to the relevant record in the `Documents` model and copying the identifier from the upper right corner.
+- `transcription`: The full filename (including the `.docx` extension) of the transcription for the document. **This file should be placed in the `transcriptions` folder of this repo.**
 
 ## Processing a single file
 
