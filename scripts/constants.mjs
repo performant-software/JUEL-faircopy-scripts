@@ -1,0 +1,76 @@
+export const argOptions = {
+  options: {
+    transcription: {
+      type: "string",
+      short: "t",
+    },
+    manifest: {
+      type: "string",
+      short: "m",
+    },
+    file: {
+      type: "string",
+      short: "f",
+    },
+    title: {
+      type: "string",
+      short: "n",
+    },
+    xmlid: {
+      type: "string",
+      short: "x",
+    },
+    fairdataID: {
+      type: "string",
+      short: "u",
+    },
+  },
+};
+
+export const xml_dict = {
+  "/ol": "/list",
+  ol: `list rend="numbered"`,
+  li: "item",
+  "/strong": "/hi",
+  strong: `hi rend="strong"`,
+  "/sup": "/hi",
+  sup: `hi rend="super"`,
+  "/a": "/ref",
+  "a href": `ref target`,
+  "a id": "ref xml:id",
+  "br />": "/line><line>",
+  "/sub": "/hi",
+  sub: `hi rend="sub"`,
+  "/s": "/hi",
+  s: `hi rend="line-through"`,
+  tr: "row",
+  "td colspan": "cell cols",
+  td: "cell",
+  "/em": "/hi",
+  em: `hi rend="bold"`,
+  ul: "list",
+  "/p>": "/line></zone>",
+  "p>": "zone><line>",
+};
+
+export const PB_MARKER_DEFAULT =
+  "<p>──────────────────────────────────────────────────────────────────────</p>";
+
+export const TEISTRING_DEFAULT = `<TEI xmlns="http://www.tei-c.org/ns/1.0">
+        <teiHeader>
+          <fileDesc>
+              <titleStmt>
+                  <title>
+                      <!-- Your Title Here -->
+                  </title>
+              </titleStmt>
+              <publicationStmt>
+                  <p></p>
+              </publicationStmt>
+              <sourceDesc>
+                  <p></p>
+              </sourceDesc>
+          </fileDesc>
+      </teiHeader>
+    </TEI>
+`;
