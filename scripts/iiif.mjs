@@ -235,7 +235,13 @@ function manifestToFacsimile3(manifestData, nextSurfaceID) {
         let localLabels = str(canvas.label);
         const id = generateOrdinalID("f", n);
 
-        localLabels = !localLabels ? { none: [id] } : localLabels;
+        //if the canvas label is the same as the whole manifest label, we'll just label by page number
+        localLabels =
+          !localLabels ||
+          getLocalString(localLabels, "en").join(" ") ==
+            getLocalString(manifestLabel, "en").join(" ")
+            ? { none: [id] }
+            : localLabels;
         surfaceIDs.push(id);
         n++; // page count
 
