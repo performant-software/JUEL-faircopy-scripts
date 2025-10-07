@@ -24,6 +24,10 @@ export const argOptions = {
       type: "string",
       short: "u",
     },
+    mediaFairdataID: {
+      type: "string",
+      short: "p"
+    }
   },
 };
 
@@ -67,3 +71,13 @@ export const TEISTRING_DEFAULT = `<TEI xmlns="http://www.tei-c.org/ns/1.0">
       </teiHeader>
     </TEI>
 `;
+
+export const MERGE_INPUT_PATH = "merging_input";
+
+export const MERGE_OUTPUT_PATH = "merging_output";
+
+export const FD_BASE_PATH = "https://app.coredata.cloud";
+
+export const IMAGE_OUTPUT = "image_output";
+
+export const FD_PROJECT_ID = 92;

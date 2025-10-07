@@ -1,0 +1,12 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node",
+  "hostRequirements": {
+    "cpus": 2
+  },
+  "waitFor": "onCreateCommand",
+  "postCreateCommand": "npm link",
+  "updateContentCommand": "npm install",
+  "forwardPorts": [
+    3000
+  ]
+}

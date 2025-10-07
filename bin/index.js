@@ -30,8 +30,12 @@ const main = async (options) => {
         console.log(error.message);
       });
   } else {
-    await createTEI(options);
-    console.log("Finished 1 document.");
+    try {
+      await createTEI(options);
+      console.log("Finished 1 document.");
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
