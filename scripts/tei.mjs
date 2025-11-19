@@ -21,62 +21,68 @@ const processTranscription = async (
   pbMarker = PB_MARKER_DEFAULT,
   dict = xml_dict
 ) => {
-  const domParser = new DOMParser();
-  const buffer = fs.readFileSync(`transcriptions/${file}`);
-  let text = await mammoth
-    .convertToHtml({ buffer: buffer })
-    .then(function (result) {
-      return result.value; // The generated HTML
-      // var messages = result.messages; // Any messages, such as warnings during conversion
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
-  //if the HTML contains elements we don't want to deal with, return an error message and abort processing
-  if (text.includes("<table") || text.includes("<ol") || text.includes("<ul")) {
-    console.error(
-      `File ${file} contains invalid structures (tables or lists); please edit the file and try again.`
-    );
-    return false;
-  }
-  const pages = text.split(pbMarker);
-  let improvedPages = [];
-  for (const page of pages) {
-    let pageCopy = page;
-    // replace some html elements with TEI equivalents
-    for (const key of Object.keys(dict)) {
-      pageCopy = pageCopy.replaceAll(`<${key}`, `<${dict[key]}`);
-      pageCopy = pageCopy.replaceAll(`</${key}`, `</${dict[key]}`);
+  try {
+    const domParser = new DOMParser();
+    const buffer = fs.readFileSync(`transcriptions/${file}`);
+    let text = await mammoth
+      .convertToHtml({ buffer: buffer })
+      .then(function (result) {
+        return result.value; // The generated HTML
+        // var messages = result.messages; // Any messages, such as warnings during conversion
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+    //if the HTML contains elements we don't want to deal with, return an error message and abort processing
+    if (text.includes("<table") || text.includes("<ol") || text.includes("<ul")) {
+      console.error(
+        `File ${file} contains invalid structures (tables or lists); please edit the file and try again.`
+      );
+      return false;
     }
-    // remove h2 and h3 elements added by LEO
-    pageCopy = pageCopy.replaceAll("<h3>Transcript:</h3>", "");
-    let improvedPage = "";
-    const segs = pageCopy.split("<h2>");
-    for (const seg of segs) {
-      if (seg.length && seg.includes("</h2>")) {
-        improvedPage += seg.split("</h2>")[1];
-      } else {
-        improvedPage += seg;
+    const pages = text.split(pbMarker);
+    let improvedPages = [];
+    for (const page of pages) {
+      let pageCopy = page;
+      // replace some html elements with TEI equivalents
+      for (const key of Object.keys(dict)) {
+        pageCopy = pageCopy.replaceAll(`<${key}`, `<${dict[key]}`);
+        pageCopy = pageCopy.replaceAll(`</${key}`, `</${dict[key]}`);
+      }
+      // remove h2 and h3 elements added by LEO
+      pageCopy = pageCopy.replaceAll("<h3>Transcript:</h3>", "");
+      let improvedPage = "";
+      const segs = pageCopy.split("<h2>");
+      for (const seg of segs) {
+        if (seg.length && seg.includes("</h2>")) {
+          improvedPage += seg.split("</h2>")[1];
+        } else {
+          improvedPage += seg;
+        }
+      }
+      if (improvedPage) {
+        improvedPages.push(improvedPage);
       }
     }
-    improvedPages.push(improvedPage);
-  }
-  // replacing the syntax LEO uses for page breaks
-  let xmlDom = domParser.parseFromString(teiString, "text/xml");
-  let TEI = xmlDom.querySelector("TEI");
-  let sourceDoc = TEI.appendChild(xmlDom.createElement("sourceDoc"));
-  sourceDoc.setAttribute("xml:id", "transcription");
-  const digits = improvedPages.length < 1000 ? 3 : 4;
-  for (let i = 0; i < improvedPages.length; i++) {
-    let surface = sourceDoc.appendChild(xmlDom.createElement("surface"));
-    surface.setAttribute("facs", `#f${i.toString().padStart(digits, "0")}`);
-    const content = domParser.parseFromString(improvedPages[i], "text/xml");
-    const contentNodes = content.childNodes;
-    for (const child of contentNodes) {
-      insertNode(xmlDom, surface, child);
+    // replacing the syntax LEO uses for page breaks
+    let xmlDom = domParser.parseFromString(teiString, "text/xml");
+    let TEI = xmlDom.querySelector("TEI");
+    let sourceDoc = TEI.appendChild(xmlDom.createElement("sourceDoc"));
+    sourceDoc.setAttribute("xml:id", "transcription");
+    const digits = improvedPages.length < 1000 ? 3 : 4;
+    for (let i = 0; i < improvedPages.length; i++) {
+      let surface = sourceDoc.appendChild(xmlDom.createElement("surface"));
+      surface.setAttribute("facs", `#f${i.toString().padStart(digits, "0")}`);
+      const content = domParser.parseFromString(improvedPages[i], "text/xml");
+      const contentNodes = content.childNodes;
+      for (const child of contentNodes) {
+        insertNode(xmlDom, surface, child);
+      }
     }
+    return xmlDom.toString();
+  } catch (error) {
+    console.log(error)
   }
-  return xmlDom.toString();
 };
 
 const insertNode = (document, parentNode, childNode) => {

@@ -18,11 +18,15 @@ const main = async (options) => {
       .on("end", async function () {
         const header = rows[0];
         for (const row of rows.slice(1)) {
-          let data = {};
-          for (let i = 0; i < header.length; i++) {
-            data[header[i]] = row[i];
+          try {
+            let data = {};
+            for (let i = 0; i < header.length; i++) {
+              data[header[i]] = row[i];
+            }
+            await createTEI(data);
+          } catch (error) {
+            console.log(error)
           }
-          await createTEI(data);
         }
         console.log(`Finished ${rows.length - 1} documents.`);
       })

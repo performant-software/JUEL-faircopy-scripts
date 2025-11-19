@@ -17,7 +17,7 @@ This script library is designed to enable the creation of TEI documents for use 
 3. **Create a `Document` record in FairData and link the uploaded PDF to it.** This document record is where the relational data for your document will be recorded. The unique identifier associated to this document record (_not_ the identifier of the associated Media record) is the `fairdataID` for this document.
 4. **If needed, extract image files from the IIIF manifest.** If individual image files are necessary for processing in LEO, you can use the `extract_images -u <fairdataID>` script to extract image files from the IIIF manifest. These files will be generated in the `image_output` folder.
 5. **Generate transcription `.docx` file using LEO.** Once this file is generated, put it in the `trancriptions` folder.
-6. **Run `create_tei -m <manifest URL> -u <fairdataID> -x <xml_id> -n <name> -t <transcription file>` to generate TEI.** The `xml_id` should be a valid XML ID that you wish to assign this document. Once generate, the TEI file will appear in the `TEI` folder.
+6. **Run `create_tei -m <manifest URL> -u <fairdataID> -x <xml_id> -n <name> -t <transcription file>` to generate TEI.** The `xml_id` should be a valid XML ID that you wish to assign this document. Once generated, the TEI file will appear in the `TEI` folder.
 7. **Import the TEI file to FairCopy.** You can now download the TEI file and import it to the FairCopy editor for further editing and annotation.
 8. **Import data from FairCopy Cloud into FairData.** Once you've marked up the TEI file, you can publish it using FairCopy. Going back to the `Document` record on FairData, add the XML ID field and import from FairCopy Cloud. This will add any people or places you've marked up in the TEI as related records.
 
@@ -53,7 +53,7 @@ The extracted images will appear in the `image_output` folder.
 
 #### Using a CSV
 
-Alternatively, you can pass a CSV file from the `csvs` folder as an argument instead, if you wish to extract images from multiple documents in one go. The CSV must have _either_ a column called `fairdataID` or a column called `manifest`. In this case, run:
+Alternatively, you can pass a CSV file from the `csvs` folder as an argument instead, if you wish to extract images from multiple documents in one go. The CSV must have _either_ a column called `fairdataID` or a column called `manifest`. (If both columns are present, the manifest URL will take precedence.) In this case, run:
 
 ```
 extract_images -f <filename.csv>
