@@ -21,6 +21,16 @@ This script library is designed to enable the creation of TEI documents for use 
 7. **Import the TEI file to FairCopy.** You can now download the TEI file and import it to the FairCopy editor for further editing and annotation.
 8. **Import data from FairCopy Cloud into FairData.** Once you've marked up the TEI file, you can publish it using FairCopy. Going back to the `Document` record on FairData, add the XML ID field and import from FairCopy Cloud. This will add any people or places you've marked up in the TEI as related records.
 
+## Bulk Processing
+
+The process outlined above is for working with single documents at a time. You can also process documents in bulk; for this you will need some facility with FairData bulk imports, and access to the DigitalOcean `juel-box` bucket. The process is as follows:
+
+1. **Create Merged PDFs.** Place folders containing single page PDFs to be merged in th `merging_input` folder. The name of each folder should be the desired XML ID of the resulting document. It should be alphanumeric with no spaces. Run `merge_pages -c`. The `-c` flag tells the script to create CSV assets that can be directly imported to FairData.
+2. **Upload PDFs to DigitalOcean.** Running `merge_pages -c` will output instructions in the console for doing this step using the `rclone` command line utility; alternatively you can copy the files from the created timestamped directory inside `merging_output` and upload them via CyberDuck or any other preferred interface. The files should end up in a folder `/processed/[timestamp]` in the DigitalOcean bucket.
+3. **Import to FairData.** Once the files are on DigitalOcean, you can go ahead and import the `.zip` file that was created in the `csvs` folder to the FairData project.
+4. **Create Transcriptions.** The filenames of the transciption files must match the XML IDs of the documents (aka the folder names from step 1). Place transcription files directly in the `transcriptions` folder.
+5. **Create TEI.** Run `create_tei -f [timestamp]/items.csv`, where the timestamp corresponds to the path to the `items` CSV file created in step 1. This will create TEI documents with aligned transcriptions in the `TEI` folder. These can then be imported to a FairCopy project.
+
 ## Script Details
 
 ### `merge_pages`

@@ -27,6 +27,10 @@ export const argOptions = {
     mediaFairdataID: {
       type: "string",
       short: "p"
+    },
+    createCSVs: {
+      type: "boolean",
+      short: "c"
     }
   },
 };
@@ -81,3 +85,13 @@ export const FD_BASE_PATH = "https://app.coredata.cloud";
 export const IMAGE_OUTPUT = "image_output";
 
 export const FD_PROJECT_ID = 92;
+
+export const FD_ITEM_MODEL_ID = 207;
+
+export const FD_MEDIA_MODEL_ID = 206;
+
+export const FD_ITEM_MEDIA_REL_ID = 232;
+
+export const FD_XML_ID_FIELD_UUID = 'udf_b57475b6_8e0d_458c_96a5_c9d81e8eb0bd';
+
+export const DO_BASE_URL = 'https://juel-box.nyc3.digitaloceanspaces.com/processed';

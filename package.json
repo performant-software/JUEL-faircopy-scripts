@@ -5,6 +5,7 @@
   "main": "bin/index.js",
   "type": "module",
   "dependencies": {
+    "adm-zip": "^0.5.16",
     "axios": "^1.11.0",
     "csv": "^6.4.1",
     "linkedom": "^0.18.12",

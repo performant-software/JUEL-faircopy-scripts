@@ -6,6 +6,9 @@ import {
   PB_MARKER_DEFAULT,
   TEISTRING_DEFAULT,
   xml_dict,
+  FD_BASE_PATH,
+  FD_PROJECT_ID,
+  FD_XML_ID_FIELD_UUID
 } from "./constants.mjs";
 
 /**
@@ -94,12 +97,45 @@ const insertNode = (document, parentNode, childNode) => {
 };
 
 export const createTEI = async (options) => {
-  const { xmlid, transcription } = options;
+  let { xmlid, title, transcription, uuid, manifest, name, fairdataID } = options;
+  //if there's a uuid column, then we're working with a fairdata spreadsheet
+  if (uuid) {
+    try {
+      //in this case we need to find the data from the API
+      const relatedMedia = await fetch(`${FD_BASE_PATH}/core_data/public/v1/items/${uuid}/media_contents?project_ids=${FD_PROJECT_ID}`).then(res => res.json());
+      if (!relatedMedia.media_contents) {
+        throw new Error(`Something went wrong fetching media for document ${uuid}`)
+      }
+      if (!relatedMedia.media_contents.length) {
+        throw new Error(`No related media found for document ${uuid}`)
+      }
+      const mediaRecord = relatedMedia.media_contents[0];
+      manifest = mediaRecord.manifest_url;
+      title = name || title || mediaRecord.name;
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  }
+  xmlid ||= options[FD_XML_ID_FIELD_UUID];
+  transcription ||= `${xmlid}.docx`;
+  fairdataID ||= uuid;
   console.log(`Processing document ${xmlid}...`);
-  const facsString = await processIIIF(options);
+  const facsString = await processIIIF({
+    manifest,
+    fairdataID,
+    title
+  });
   let teiString = facsString;
   if (transcription) {
-    teiString = await processTranscription(transcription, facsString);
+    try {
+      const withTrans = await processTranscription(transcription, facsString);
+      if (withTrans) {
+        teiString = withTrans;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   teiString && fs.writeFileSync(`TEI/${xmlid}.xml`, teiString);
 };
